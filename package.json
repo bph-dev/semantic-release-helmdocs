@@ -1,0 +1,8 @@
+{
+  "name": "semantic-release-helmdocs",
+  "version": "1.0.0",
+  "description": "Semantic-release plugin for rendering helm-chart documentation using helm-docs.",
+  "main": "index.js",
+  "author": "bph-dev",
+  "license": "MIT"
+}
