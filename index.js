@@ -1,5 +1,5 @@
 const verify = require('./lib/verifyHelmDocsInstallation');
-const prepare = require('./lib/prepareHelmChartDocumentation');
+const render = require('./lib/prepareHelmChartDocumentation');
 
 let verified = false;
 
@@ -13,7 +13,7 @@ async function prepare(pluginConfig, context) {
     await verifyConditions(pluginConfig, context);
   }
 
-  await prepare(pluginConfig, context);
+  await render(pluginConfig, context);
 }
 
 module.exports = { 

@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "Semantic-release plugin for rendering helm-chart documentation using helm-docs.",
   "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest --coverage"
+  },
   "author": "bph-dev",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "aggregate-error": "^4.0.1",
+    "execa": "^6.1.0",
+    "jest": "^29.4.2"
+  }
 }
