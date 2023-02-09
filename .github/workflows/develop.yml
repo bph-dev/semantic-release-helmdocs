@@ -28,6 +28,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout repo
         uses: actions/checkout@v3.3.0
+        with:
+          ref: 'develop'
       
       - run: cd $GITHUB_WORKSPACE
       - run: ls -la
