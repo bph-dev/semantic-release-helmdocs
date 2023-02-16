@@ -22,8 +22,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3.3.0
         with:
-          ref: $GITHUB_REF_NAME 
-        id: checkoutRepo
+          ref: "main"
+          fetch-depth: 0
         
         # Install dependencies
       - run: |
