@@ -1,0 +1,66 @@
+name: code-coverage
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Install Node 18
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+          
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: checkout repo
+        uses: actions/checkout@v3.3.0
+        with:
+          ref: [ 'main', 'develop' ]
+        run: cd $GITHUB_WORKSPACE
+        run: pwd 
+        run: ls -la
+        
+      - name: Run unit tests with coverage
+        id: unitTest
+        # Install dependencies
+        run: npm install
+        # Run tests
+        run: npm test --coveerageReporters coverage-summary.json
+        run: ls -la
+        
+      - name: Jest Coverage Comment
+        id: coverageComment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: ./coverage/coverage-summary.json
+          title: My Jest Coverage Comment
+          summary-title: My Summary Title
+          badge-title: Coverage
+          create-new-comment: false
+          hide-comment: false
+          hide-summary: false
+          junitxml-title: My JUnit Title
+          junitxml-path: ./coverage/junit.xml
+          coverage-title: My Coverage Title
+          coverage-path: ./coverage.txt
+        run: tree
+        run: ls -la
+      
+      - name: Check the output coverage
+        run: |
+          echo "Coverage Percentage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Summary HTML - ${{ steps.coverageComment.outputs.summaryHtml }}"
+          
+      - name: Create the badge
+        if: github.ref == 'refs/heads/main'
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: bc74ad0cb20249c53af8ba9c6434c57f
+          filename: jest-coverage-comment__main.json
+          label: Coverage
+          message: ${{ steps.coverageComment.outputs.coverage }}%
+          color: ${{ steps.coverageComment.outputs.color }}
+          namedLogo: javascript
