@@ -16,16 +16,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
+          
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout repo
         uses: actions/checkout@v3.3.0
         with:
-          ref: $GITHUB_REF_NAME
-        run: cd $GITHUB_WORKSPACE && pwd && ls -la        
+          ref: $GITHUB_REF_NAME 
+        
       - name: Run unit tests with coverage
         id: unitTest
         # Install dependencies
         run: |
+          cd $GITHUB_WORKSPACE && pwd && ls -la  
           npm install
           npm test --coveerageReporters coverage-summary.json
           ls -la
@@ -44,16 +46,16 @@ jobs:
           junitxml-title: My JUnit Title
           junitxml-path: ./coverage/junit.xml
           coverage-title: My Coverage Title
-          coverage-path: ./coverage.txt
-        run: |
-          tree
-          ls -la
+          coverage-path: ./coverage.txt 
           
       - name: Check the output coverage
         run: |
+          tree
           echo "Coverage Percentage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
           echo "Summary HTML - ${{ steps.coverageComment.outputs.summaryHtml }}"
+          ls -la
+          
       - name: Create the badge
         if: github.ref == 'refs/heads/main'
         uses: schneegans/dynamic-badges-action@v1.6.0
