@@ -19,15 +19,14 @@ jobs:
           node-version: 18
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3.3.0
         with:
           ref: $GITHUB_REF_NAME 
+        id: checkoutRepo
         
-      - name: Run unit tests with coverage
-        id: unitTest
         # Install dependencies
-        run: |
+      - run: |
           cd $GITHUB_WORKSPACE && pwd && ls -la  
           npm install
           npm test --coveerageReporters coverage-summary.json
