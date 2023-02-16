@@ -1,5 +1,10 @@
 name: code-coverage
 
+on:
+  # Triggers the workflow on push or pull request events but only for the "develop" branch
+  push:
+    branches: [ "main", "develop" ]
+
 jobs:
   test:
     # The type of runner that the job will run on
@@ -11,24 +16,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
-          
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout repo
         uses: actions/checkout@v3.3.0
         with:
-          ref: [ 'main', 'develop' ]
-        run: cd $GITHUB_WORKSPACE
-        run: pwd 
-        run: ls -la
-        
+          ref: $GITHUB_REF_NAME
+        run: cd $GITHUB_WORKSPACE && pwd && ls -la        
       - name: Run unit tests with coverage
         id: unitTest
         # Install dependencies
-        run: npm install
-        # Run tests
-        run: npm test --coveerageReporters coverage-summary.json
-        run: ls -la
-        
+        run: |
+          npm install
+          npm test --coveerageReporters coverage-summary.json
+          ls -la
+          
       - name: Jest Coverage Comment
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
@@ -44,15 +45,15 @@ jobs:
           junitxml-path: ./coverage/junit.xml
           coverage-title: My Coverage Title
           coverage-path: ./coverage.txt
-        run: tree
-        run: ls -la
-      
+        run: |
+          tree
+          ls -la
+          
       - name: Check the output coverage
         run: |
           echo "Coverage Percentage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
           echo "Summary HTML - ${{ steps.coverageComment.outputs.summaryHtml }}"
-          
       - name: Create the badge
         if: github.ref == 'refs/heads/main'
         uses: schneegans/dynamic-badges-action@v1.6.0
