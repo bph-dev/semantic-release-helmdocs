@@ -46,5 +46,3 @@ test('issue when finding and executing helm-docs', () => {
   }
   verifyConditions(pluginConfig, "");
 });
-
-
