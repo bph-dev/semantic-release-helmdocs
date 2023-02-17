@@ -2,8 +2,8 @@ name: code-coverage
 
 on:
   # Triggers the workflow on push or pull request events but only for the "develop" branch
-#   push:
-#     branches: [ "main", "develop" ]
+  push:
+    branches: $GITHUB_REF_NAME
   workflow_call:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3.3.0
         with:
-          ref: "main"
+          ref: $GITHUB_REF_NAME
           fetch-depth: 0
         
         # Install dependencies
