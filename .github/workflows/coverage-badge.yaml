@@ -31,39 +31,3 @@ jobs:
           npm install
           npm test
           ls -la
-          
-      - name: Jest Coverage Comment
-        id: coverageComment
-        uses: MishaKav/jest-coverage-comment@main
-        with:
-          coverage-summary-path: ./coverage/coverage-summary.json
-          title: My Jest Coverage Comment
-          summary-title: My Summary Title
-          badge-title: Coverage
-          create-new-comment: false
-          hide-comment: false
-          hide-summary: false
-          junitxml-title: My JUnit Title
-          junitxml-path: ./coverage/junit.xml
-          coverage-title: My Coverage Title
-          coverage-path: ./coverage.txt 
-          
-      - name: Check the output coverage
-        run: |
-          tree
-          echo "Coverage Percentage - ${{ steps.coverageComment.outputs.coverage }}"
-          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
-          echo "Summary HTML - ${{ steps.coverageComment.outputs.summaryHtml }}"
-          ls -la
-          
-      - name: Create the badge
-        if: github.ref == 'refs/heads/main'
-        uses: schneegans/dynamic-badges-action@v1.6.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: bc74ad0cb20249c53af8ba9c6434c57f
-          filename: jest-coverage-comment__main.json
-          label: Coverage
-          message: ${{ steps.coverageComment.outputs.coverage }}%
-          color: ${{ steps.coverageComment.outputs.color }}
-          namedLogo: javascript
